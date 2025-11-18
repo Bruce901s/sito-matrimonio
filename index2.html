@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matrimonio – Brunella & Andrea</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="hero">
+    <div class="overlay">
+        <h1>Brunella & Andrea</h1>
+        <p class="date">04 Luglio 2024</p>
+        <a href="#storia" class="btn">La nostra storia</a>
+    </div>
+</header>
+
+<section id="storia" class="section">
+    <h2>La nostra storia</h2>
+    <p>
+        Con amore, sorrisi e avventure abbiamo scelto di unire per sempre i nostri destini.  
+        Siamo felici di condividere questo giorno speciale con voi.
+    </p>
+</section>
+
+<section class="countdown section">
+    <h2>Manca al grande giorno</h2>
+    <div id="timer">Caricamento...</div>
+</section>
+
+<section class="section info">
+    <h2>Informazioni</h2>
+
+    <div class="info-box">
+        <h3>⛪ Cerimonia & Ricevimento</h3>
+        <p>Tenuta Barbesina<br> Via Alessandrina 11, Garlasco</p>
+    </div>
+
+    <div class="info-box">
+        <h3>📆 Calendario</h3>
+        <p>
+            <a href="matrimonio.ics" download class="btn secondary">Scarica il calendario</a>
+        </p>
+    </div>
+
+    <div class="info-box">
+        <h3>🗺 Mappa</h3>
+        <iframe 
+            src="https://www.google.com/maps?q=Tenuta+Barbesina+Garlasco&output=embed" 
+            width="100%" height="300" style="border:2px solid black; border-radius: 8px;"></iframe>
+    </div>
+</section>
+
+<section class="section rsvp">
+    <h2>Conferma la tua presenza</h2>
+    <p>Compila il modulo per confermare:</p>
+
+    <form action="https://formsubmit.co/brunella.cutrera@gmail.com" method="POST" class="rsvp-form">
+
+        <label>Nome e Cognome</label>
+        <input type="text" name="nome" required>
+
+        <label>Parteciperai?</label>
+        <select name="presenza" required>
+            <option value="">Seleziona...</option>
+            <option value="Sì, sarò presente">Sì, sarò presente</option>
+            <option value="No, non posso venire">No, non posso venire</option>
+        </select>
+
+        <label>Numero di persone</label>
+        <input type="number" name="numero" min="1" max="10" required>
+
+        <label>Allergie o richieste speciali</label>
+        <textarea name="allergie"></textarea>
+
+        <label>Messaggio per gli sposi</label>
+        <textarea name="messaggio"></textarea>
+
+        <input type="hidden" name="_captcha" value="false">
+
+        <button type="submit" class="btn">Invia Conferma</button>
+    </form>
+
+    <div id="successMessage" style="display:none; margin-top:20px; 
+        padding:20px; border:3px solid black; background:#d4ffcf; 
+        border-radius:10px; font-size:1.2rem; font-weight:bold;">
+        🎉 Grazie! La tua conferma è stata inviata con successo.
+    </div>
+</section>
+
+<footer>
+    <p>Con amore, Brunella & Andrea ❤️</p>
+</footer>
+
+<script>
+    const matrimonio = new Date("July 4, 2024 15:00:00").getTime();
+
+    function aggiornaCountdown() {
+        const oggi = new Date().getTime();
+        const diff = matrimonio - oggi;
+
+        if (diff <= 0) {
+            document.getElementById("timer").innerHTML = "Oggi è il grande giorno! 💍";
+            return;
+        }
+
+        const giorni = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const ore = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minuti = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+
+        document.getElementById("timer").innerHTML =
+            giorni + " giorni • " + ore + " ore • " + minuti + " min";
+    }
+
+    setInterval(aggiornaCountdown, 1000);
+
+    document.querySelector(".rsvp-form").addEventListener("submit", function(e){
+        e.preventDefault(); // Previene ricarica
+        const form = e.target;
+
+        // Mostra conferma visiva
+        form.style.display = "none";
+        document.getElementById("successMessage").style.display = "block";
+
+        // Invia dati a FormSubmit
+        fetch(form.action, { method: "POST", body: new FormData(form) });
+    });
+</script>
+
+</body>
+</html>
